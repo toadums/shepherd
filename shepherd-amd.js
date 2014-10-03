@@ -146,7 +146,7 @@
         throw new Error("Using the attachment feature of Shepherd requires the Tether library");
       }
       opts = this.getAttachTo();
-      attachment = ATTACHMENT[opts.on || 'right'];
+      attachment = ATTACHMENT['right'];
       if (opts.element == null) {
         opts.element = 'viewport';
         attachment = 'middle center';
@@ -162,9 +162,17 @@
           }
         ],
         target: opts.element,
-        offset: opts.offset || '0 0',
-        attachment: attachment
+        offset: opts.offset || '0 0'
       };
+      if (opts.on) {
+        attachment = ATTACHMENT[opts.on];
+      } else if (opts.attachment) {
+        attachment = opts.attachment;
+        if (opts.targetAttachment) {
+          tetherOpts.targetAttachment = opts.targetAttachment;
+        }
+      }
+      tetherOpts.attachment = attachment;
       return this.tether = new Tether(extend(tetherOpts, this.options.tetherOptions));
     };
 

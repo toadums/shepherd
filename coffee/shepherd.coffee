@@ -95,7 +95,7 @@ class Step extends Evented
 
     opts = @getAttachTo()
 
-    attachment = ATTACHMENT[opts.on or 'right']
+    attachment = ATTACHMENT['right']
     if not opts.element?
       opts.element = 'viewport'
       attachment = 'middle center'
@@ -110,7 +110,15 @@ class Step extends Evented
       ]
       target: opts.element
       offset: opts.offset or '0 0'
-      attachment: attachment
+
+    if opts.on
+      attachment = ATTACHMENT[opts.on]
+    else if opts.attachment
+      attachment = opts.attachment
+      if opts.targetAttachment
+        tetherOpts.targetAttachment = opts.targetAttachment
+
+    tetherOpts.attachment = attachment
 
     @tether = new Tether extend(tetherOpts, @options.tetherOptions)
 
@@ -279,7 +287,7 @@ class Tour extends Evented
       step.tour = @
 
     @steps.push step
-    
+
     step
 
   getById: (id) ->
